@@ -8,7 +8,7 @@
     })
 
     // Definición de emits para poder enviar los valores del formulario a otro componente
-    defineEmits(['update:nombre', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas'])
+    const emit = defineEmits(['update:nombre', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas', 'guardar-paciente'])
 
     const props = defineProps({
         nombre: {
@@ -43,6 +43,9 @@
 
         alerta.mensaje = 'Paciente registrado'
         alerta.tipo = 'exito'
+
+        // Enviando el emit desde la función
+        emit('guardar-paciente')
     }
 </script>
 
