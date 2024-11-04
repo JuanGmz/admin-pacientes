@@ -1,11 +1,37 @@
 <script setup>
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, watch, onMounted } from 'vue'
   import { uid } from 'uid'
   import Header from './components/Header.vue'
   import Formulario from './components/Formulario.vue'
   import Paciente from './components/Paciente.vue'
 
   const pacientes = ref([])
+
+  // Observa cambios en `pacientes` y guarda en `localStorage` cada vez que cambien
+  watch(pacientes, () => {
+    localStoragePacientes()
+  }, {
+    deep: true
+  })
+
+  // Cargar datos de `localStorage` al montar el componente
+  onMounted(() => {
+    const pacientesStorage = localStorage.getItem('pacientes')
+
+    // Verificar que `pacientesStorage` tenga un valor válido antes de intentar parsear
+    if (pacientesStorage && pacientesStorage !== "undefined") {
+      try {
+        pacientes.value = JSON.parse(pacientesStorage)
+      } catch (error) {
+        console.error("Error al parsear JSON:", error)
+      }
+    }
+  })
+
+  const localStoragePacientes = () => {
+    // Guardar el valor de `pacientes` en `localStorage`
+    localStorage.setItem('pacientes', JSON.stringify(pacientes.value))
+  }
 
   // Leer datos del formulario con ref
   // const nombre = ref('')
@@ -25,7 +51,7 @@
     if (paciente.id) {
       const { id } = paciente
       
-      const i = pacientes.value.findIndex((pacienteState) => pacienteState.id === id)
+      const i = pacientes.value.findIndex(paciente => paciente.id === id)
 
       pacientes.value[i] = {...paciente}
     } else {
@@ -52,6 +78,10 @@
     const pacienteEditar = pacientes.value.filter(paciente => paciente.id === id)[0]
 
     Object.assign(paciente, pacienteEditar)
+  }
+
+  const eliminarPaciente = (id) => {
+    pacientes.value = pacientes.value.filter(paciente => paciente.id !== id)
   }
 </script>
 
@@ -83,6 +113,7 @@
             v-for="paciente in pacientes"
             :paciente="paciente"
             @actualizar-paciente="actualizarPaciente"
+            @eliminar-paciente="eliminarPaciente"
           />
         </div>
 
