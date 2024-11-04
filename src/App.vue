@@ -22,20 +22,36 @@
 
   // Función para guardar paciente
   const guardarPaciente = () => {
-    // Crear una copia del paciente y agregarlo al arreglo de pacientes
-    pacientes.value.push({
-      ...paciente,
-      id: uid()
-    })
+    if (paciente.id) {
+      const { id } = paciente
+      
+      const i = pacientes.value.findIndex((pacienteState) => pacienteState.id === id)
+
+      pacientes.value[i] = {...paciente}
+    } else {
+      // Crear una copia del paciente y agregarlo al arreglo de pacientes
+      pacientes.value.push({
+        ...paciente,
+        id: uid()
+      })
+    }
 
     // Limpiando el formulario
     Object.assign(paciente, {
+      id: null,
       nombre: '',
       propietario: '',
       email: '',
       alta: '',
       sintomas: ''
     })
+  }
+
+  const actualizarPaciente = (id) => {
+    // Buscar al paciente que concide con el id enviado, "[0]" hace que retorne solo el primer elemento y lo retorna como objeto
+    const pacienteEditar = pacientes.value.filter(paciente => paciente.id === id)[0]
+
+    Object.assign(paciente, pacienteEditar)
   }
 </script>
 
@@ -51,6 +67,7 @@
         v-model:alta="paciente.alta"
         v-model:sintomas="paciente.sintomas"
         @guardar-paciente="guardarPaciente"
+        :id="paciente.id"
       />
 
       <div class="md:w-1/2 md:h-screen overflow-y-scroll">
@@ -65,6 +82,7 @@
           <Paciente
             v-for="paciente in pacientes"
             :paciente="paciente"
+            @actualizar-paciente="actualizarPaciente"
           />
         </div>
 
