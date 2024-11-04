@@ -41,11 +41,19 @@
             return
         }
 
-        alerta.mensaje = 'Paciente registrado'
-        alerta.tipo = 'exito'
-
         // Enviando el emit desde la función
         emit('guardar-paciente')
+
+        alerta.mensaje = 'Paciente almacenado correctamente'
+        alerta.tipo = 'exito'
+
+        // Resetear el objeto de alerta después de 3 segundos
+        setTimeout(() => {
+            Object.assign(alerta, {
+                mensaje: '',    
+                tipo: ''
+            })
+        }, 3000);
     }
 </script>
 
