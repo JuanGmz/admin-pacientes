@@ -7,21 +7,35 @@
         mensaje: ''
     })
 
-    // Leer datos del formulario con ref
-    // const nombre = ref('')
+    // Definición de emits para poder enviar los valores del formulario a otro componente
+    defineEmits(['update:nombre', 'update:propietario', 'update:email', 'update:alta', 'update:sintomas'])
 
-    // Leer datos del formulario con reactive
-    const paciente = reactive({
-        nombre: '',
-        propietario: '',
-        email: '',
-        alta: '',
-        sintomas: ''
+    const props = defineProps({
+        nombre: {
+            type: String,
+            required: true
+        },
+        propietario: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true
+        },
+        alta: {
+            type: String,
+            required: true
+        },
+        sintomas: {
+            type: String,
+            required: true
+        }
     })
 
     const validar = () => {
         // Object.values funciona para obtener todos los valores del objeto
-        if(Object.values(paciente).includes('')) {
+        if(Object.values(props).includes('')) {
             alerta.mensaje = 'Todos los campos son obligatorios'
             alerta.tipo = 'error'
             return
@@ -59,13 +73,14 @@
                 >
                     Nombre de la Mascota
                 </label>
-                <!-- v-model para leer los datos -->
+                <!-- @input enviamos el emit con el nombre del emit y el otro parametro es para enviar el valor escrito en el input -->
                 <input 
                     id="mascota"
                     type="text"
                     placeholder="Nombre de la mascota"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.nombre"
+                    :value="nombre"
+                    @input="$emit('update:nombre', $event.target.value)"
                 />
             </div>
 
@@ -82,7 +97,8 @@
                     type="text"
                     placeholder="Nombre de la mascota"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.propietario"
+                    :value="propietario"
+                    @input="$emit('update:propietario', $event.target.value)"
                 />
             </div>
 
@@ -99,7 +115,8 @@
                     type="email"
                     placeholder="Email del propietario"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.email"
+                    :value="email"
+                    @input="$emit('update:email', $event.target.value)"
                 />
             </div>
 
@@ -115,7 +132,8 @@
                     id="alta"
                     type="date"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                    v-model="paciente.alta"
+                    :value="alta"
+                    @input="$emit('update:alta', $event.target.value)"
                 />
             </div>
 
@@ -131,7 +149,8 @@
                     id="sintomas"
                     placeholder="Describe los síntomas del paciente"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md h-40"
-                    v-model="paciente.sintomas"
+                    :value="sintomas"
+                    @input="$emit('update:sintomas', $event.target.value)"
                 />
             </div>
 
