@@ -26,6 +26,9 @@
             alerta.tipo = 'error'
             return
         }
+
+        alerta.mensaje = 'Paciente registrado'
+        alerta.tipo = 'exito'
     }
 </script>
 
