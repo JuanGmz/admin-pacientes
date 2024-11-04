@@ -1,5 +1,6 @@
 <script setup>
   import { ref, reactive } from 'vue'
+  import { uid } from 'uid'
   import Header from './components/Header.vue'
   import Formulario from './components/Formulario.vue'
   import Paciente from './components/Paciente.vue'
@@ -11,6 +12,7 @@
 
   // Leer datos del formulario con reactive
   const paciente = reactive({
+    id: null,
     nombre: '',
     propietario: '',
     email: '',
@@ -22,11 +24,13 @@
   const guardarPaciente = () => {
     // Crear una copia del paciente y agregarlo al arreglo de pacientes
     pacientes.value.push({
-      ...paciente
+      ...paciente,
+      id: uid()
     })
 
     // Limpiando el formulario
     Object.assign(paciente, {
+      id: null,
       nombre: '',
       propietario: '',
       email: '',
