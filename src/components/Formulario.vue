@@ -1,10 +1,29 @@
 <script setup>
+    import { ref, reactive } from 'vue'
 
+    // Leer datos del formulario con ref
+    // const nombre = ref('')
+
+    // Leer datos del formulario con reactive
+    const paciente = reactive({
+        nombre: '',
+        propietario: '',
+        email: '',
+        alta: '',
+        sintomas: ''
+    })
+
+    const validar = () => {
+        // Object.values funciona para obtener todos los valores del objeto
+        if(Object.values(paciente).includes('')) {
+
+            return
+        }
+    }
 </script>
 
 <template>
     <div class="md:w-1/2">
-
         <h2 class="font-black text-3xl text-center">Seguimiento de Pacientes</h2>
 
         <p class="text-lg text-gray-600 mt-5 text-center mb-10">
@@ -12,8 +31,10 @@
             <span class="text-indigo-600 font-bold">Adminístralos</span>
         </p>
 
+        <!-- Formulario, v-on para escuchar el evento submit con prevent para prevenir el envío y v-model para leer los datos -->
         <form
             class="bg-white shadow-md rounded-lg py-10 px-5 mb-10"
+            v-on:submit.prevent="validar"
         >
             <div class="mb-5">
                 <label 
@@ -23,11 +44,13 @@
                 >
                     Nombre de la Mascota
                 </label>
+                <!-- v-model para leer los datos -->
                 <input 
                     id="mascota"
                     type="text"
                     placeholder="Nombre de la mascota"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                    v-model="paciente.nombre"
                 />
             </div>
 
@@ -44,6 +67,7 @@
                     type="text"
                     placeholder="Nombre de la mascota"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                    v-model="paciente.propietario"
                 />
             </div>
 
@@ -60,6 +84,7 @@
                     type="email"
                     placeholder="Email del propietario"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                    v-model="paciente.email"
                 />
             </div>
 
@@ -75,6 +100,7 @@
                     id="alta"
                     type="date"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                    v-model="paciente.alta"
                 />
             </div>
 
@@ -90,6 +116,7 @@
                     id="sintomas"
                     placeholder="Describe los síntomas del paciente"
                     class="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md h-40"
+                    v-model="paciente.sintomas"
                 />
             </div>
 
