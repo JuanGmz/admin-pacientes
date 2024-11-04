@@ -30,7 +30,6 @@
 
     // Limpiando el formulario
     Object.assign(paciente, {
-      id: null,
       nombre: '',
       propietario: '',
       email: '',
