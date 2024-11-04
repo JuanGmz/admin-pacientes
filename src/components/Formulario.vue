@@ -1,5 +1,11 @@
 <script setup>
     import { ref, reactive } from 'vue'
+    import Alerta from './Alerta.vue'
+
+    const alerta = reactive({
+        tipo: '',
+        mensaje: ''
+    })
 
     // Leer datos del formulario con ref
     // const nombre = ref('')
@@ -16,7 +22,8 @@
     const validar = () => {
         // Object.values funciona para obtener todos los valores del objeto
         if(Object.values(paciente).includes('')) {
-
+            alerta.mensaje = 'Todos los campos son obligatorios'
+            alerta.tipo = 'error'
             return
         }
     }
@@ -30,6 +37,11 @@
             Añade Pacientes y 
             <span class="text-indigo-600 font-bold">Adminístralos</span>
         </p>
+
+        <Alerta
+            v-if="alerta.mensaje"
+            :alerta="alerta"
+        />
 
         <!-- Formulario, v-on para escuchar el evento submit con prevent para prevenir el envío y v-model para leer los datos -->
         <form
